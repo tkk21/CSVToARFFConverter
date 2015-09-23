@@ -1,7 +1,15 @@
 package csvToArffConverter;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class ARFFData {
 
@@ -34,9 +42,71 @@ public class ARFFData {
 		}
 	}
 	
-	public List<String> getARFF(){
-		return null;
+	public void getARFF(File file){
+		BufferedWriter bw = null;
+		
+		String attributeTag = "@attribute";
+		
+		try {
+			bw=new BufferedWriter(new FileWriter(file));
+			bw.append("@relation sensorAndMotion");
+			bw.newLine();
+			bw.newLine();
+			
+			for (int i = 0; i < attributes.length-1; i++) {
+				bw.append(String.format("%s %s numeric", attributeTag, attributes[i]));
+				bw.newLine();
+			}
+			
+			String counterNominal = formatRatchetNominal();
+			bw.append(String.format("%s %s %s", attributeTag, attributes[attributes.length-1], counterNominal));
+			
+			bw.newLine();
+			bw.newLine();
+			
+			bw.append("@data");
+			bw.newLine();
+			
+			for (String[] dataRow : data) {
+				for (int i = 0; i < dataRow.length-1; i++) {
+					bw.append(dataRow[i]);
+					bw.append(",");
+				}
+				bw.append(dataRow[dataRow.length-1]);
+				bw.newLine();
+			}
+		}
+		catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		finally {
+			try {
+				bw.close();
+			}
+			catch(IOException e) {
+				System.out.println(e.getMessage());
+			}
+		}
 	}
+	
+	private String formatRatchetNominal() {
+		String[] lastRow  = data.get(data.size()-1);
+		int counter = Integer.parseInt(lastRow[lastRow.length-1]);
+		
+		StringBuilder sb = new StringBuilder();
+		sb.append("{");
+		
+		for (int i = 0; i <= counter; i++){
+			sb.append(i);
+			if (i+1<=counter){
+				sb.append(",");
+			}
+		}
+		sb.append("}");
+		 
+		return sb.toString();
+	}
+	
 	/**
 	 * @return the attributes
 	 */
@@ -53,9 +123,11 @@ public class ARFFData {
 
 	private String[] removeColumn (String[] row, int column){
 		String[] newRow = new String[row.length-1];
+		int j = 0;
 		for (int i = 0; i<row.length; i++){
 			if (i!=column){
-				newRow[i] = row[i];
+				newRow[j] = row[i];
+				j++;
 			}
 		}
 		return newRow;
