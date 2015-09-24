@@ -1,7 +1,6 @@
 package csvToArffConverter;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -54,17 +53,28 @@ public class ARFFData {
 	 * 3. return an arffData that has rest of the data
 	 * @param numRows
 	 */
-	public void splitData (int numRows){
+	public ARFFData splitData (int numRows){
 		List<String[]> newData = new ArrayList<String[]>();
-		ARFFData splitArff = new ARFFData(csv);
+		List<String[]> splitData = new ArrayList<String[]>();
+		if (data.size()<numRows){
+			System.out.println("not enough data");
+			return null;
+		}
+		for (int i= 0; i<numRows; i++){
+			newData.add(data.get(i));
+		}
+		
+		for (int i =numRows; i<data.size(); i++){
+			splitData.add(data.get(i));
+		}
+		this.data = newData;
+		return new ARFFData(attributes, splitData);
 	}
 	
-	/**
-	 * 1. update nominal values
-	 * 
-	 */
-	public void combineData (){
-		
+	public void combineData (ARFFData arffToCombine){
+		for (String[] row : arffToCombine.getData()){
+			data.add(row);
+		}
 	}
 	
 	public void deleteAttribute (String attribute){
