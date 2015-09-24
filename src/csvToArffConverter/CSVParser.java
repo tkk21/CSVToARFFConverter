@@ -3,17 +3,13 @@ package csvToArffConverter;
 import java.util.List;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class CSVParser {
 
-	public static List<String[]> parseCSV (File file) throws FileNotFoundException{
-		if (!file.exists()){
-			throw new FileNotFoundException();
-		}
+	public static List<String[]> parseCSV (File file){
 		final String csvSplitBy = ",";
 		String row= "";
 		BufferedReader br = null;
