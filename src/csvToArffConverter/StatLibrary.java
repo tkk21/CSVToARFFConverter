@@ -4,7 +4,7 @@ import java.util.List;
 
 public class StatLibrary {
 
-	public double calculateMean (List<String> column){
+	public static double calculateMean (List<String> column){
 		double sum = 0.0;
 		for (String s : column){
 			try {
@@ -17,12 +17,13 @@ public class StatLibrary {
 		return sum/column.size();
 	}
 	
-	public double calculateStandardDeviation(List<String> column){
+	public static double calculateStandardDeviation(List<String> column){
 		double mean = calculateMean(column);
 		double variance = 0.0;
 		for (String s : column){
 			try {
 				variance = (Double.parseDouble(s) - mean);
+				variance = variance*variance;
 			}
 			catch (NumberFormatException e){
 				System.out.println("bad double value in column");
