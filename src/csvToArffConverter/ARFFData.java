@@ -39,7 +39,7 @@ public class ARFFData {
 	 * 3. add values inside the new column (label A or label T)
 	 * @param attribute
 	 */
-	public void insertAttribute (String attribute, String label){
+	public void insertAttributeToEnd (String attribute, String label){
 		this.attributes = addColumnToEnd(attributes, attribute);
 		for (int i = 0; i<data.size(); i++){
 			data.set(i, addColumnToEnd(data.get(i), label));
