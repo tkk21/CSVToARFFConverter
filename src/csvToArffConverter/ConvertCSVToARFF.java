@@ -19,7 +19,6 @@ public class ConvertCSVToARFF {
 			System.exit(1);
 		}
 		return convertWithStat(arffA, arffB);
-		
 	}
 	
 	public static List<ARFFData> convertWithStat (ARFFData arffA, ARFFData arffB){
@@ -30,9 +29,9 @@ public class ConvertCSVToARFF {
 		int newAttributeIndex = 0;
 		for (int i = 0; i<arffA.getAttributes().length; i++){
 			if (shouldCalculateStats(arffA.getAttributes()[i])){
-				newAttribute[newAttributeIndex] = arffA.getAttributes()[i] + "MEAN";
+				newAttribute[newAttributeIndex] = arffA.getAttributes()[i] + "_MEAN";
 				newAttributeIndex++;
-				newAttribute[newAttributeIndex] = arffA.getAttributes()[i] + "STANDARD_DEVIATION";
+				newAttribute[newAttributeIndex] = arffA.getAttributes()[i] + "_STANDARD_DEVIATION";
 				newAttributeIndex++;
 			}
 		}
@@ -56,6 +55,7 @@ public class ConvertCSVToARFF {
 		
 		return convert(newArffA, newArffB);
 	}
+	
 	private static void populateWithStat (List<String[]> newARFFData, ARFFData arff){
 		String[] originalAttribuite = arff.getAttributes();
 		List<String[]> arffData = arff.getData();
@@ -119,11 +119,11 @@ public class ConvertCSVToARFF {
 			System.exit(1);
 		}
 		return convert(arffA, arffB);
-		
 	}
+	
 	public static List<ARFFData> convert(ARFFData arffA, ARFFData arffB){
 		List<ARFFData> trainTestPair = new ArrayList<ARFFData>();
-		final int ROWS_FOR_TRAIN = 2;
+		final int ROWS_FOR_TRAIN = 35;
 
 		attributePreprocessing(arffA, arffB);
 		arffA.insertAttributeToEnd("Label", "A");
